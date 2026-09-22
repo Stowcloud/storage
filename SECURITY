@@ -1,0 +1,5 @@
+# Security
+
+Please report suspected vulnerabilities privately to the Stowcloud maintainers rather than opening a public issue. Include the affected version, platform, reproduction steps, and impact. Do not include credentials or private user data.
+
+Path validation rejects absolute paths, traversal components, separators inside components, NUL bytes, and invalid UTF-8. Consumers must still enforce authorization and backend-specific confinement.

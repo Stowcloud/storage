@@ -1,0 +1,7 @@
+# Contributing
+
+Keep this repository focused on backend-neutral storage contracts. Do not add Stowcloud ACL, quota, share, route, application, Hanami, Fx, Gin, or internal package dependencies.
+
+For public API changes, document the observable contract and update `RELEASE_NOTES.md`. Run `gofmt`, `go test ./...`, `go vet ./...`, and the race test locally. Explain platform-specific behavior and preserve the Linux amd64/arm64 and portable compile matrix.
+
+Use Conventional Commit subjects. Releases require a clean review, a new immutable annotated tag, public module resolution, and a consumer test against the released version. Never move or reuse a release tag; fix a release with a new version.

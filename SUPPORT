@@ -1,0 +1,7 @@
+# Support
+
+The storage module is maintained by the Stowcloud maintainers. Issues should include the module version, Go version, target platform, and a minimal reproducer.
+
+Security-sensitive reports must not be posted publicly; use the private process in `SECURITY`.
+
+The module does not provide product policy or path-confinement guarantees. Consumers are responsible for applying authorization and for selecting an adapter whose confinement semantics meet their requirements.
