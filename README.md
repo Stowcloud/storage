@@ -1,8 +1,10 @@
 # storage
 
-`github.com/stowcloud/storage` defines small backend-neutral contracts for hierarchical storage. It validates relative paths, describes entries and health, and exposes optional capabilities through ordinary Go interfaces.
+`github.com/stowcloud/storage` defines backend-neutral hierarchical storage contracts and reusable backends. The root package owns validated portable paths, entries, health, and optional capabilities. Subpackages own Linux confined local filesystems (`local`), S3-compatible buckets (`s3`), VeraCrypt filesystems (`veracrypt`), and Linux filesystem notifications (`watch`).
 
-The module deliberately does not own ACL, quotas, shares, upload policy, indexing, application dependency injection, or filesystem confinement. Product applications keep those policies at their integration boundary. A local adapter may use this package's contracts while retaining the product's own confinement implementation.
+`local.Path` preserves existing POSIX byte names, including names that portable `storage.Path` cannot represent. Callers must validate product paths, reserved namespaces, grants, quotas, and upload policies before invoking a backend. The local backend confines operations to an opened root; `s3` and `veracrypt` use caller-provided scratch space for materialization.
+
+No backend owns Stowcloud ACL, share identities, quota, transfer sessions, indexing, or application dependency injection. Product applications adapt backend capabilities at their integration boundary.
 
 ## Requirements
 
