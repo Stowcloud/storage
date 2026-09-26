@@ -92,7 +92,7 @@ func classifyS3Error(status int, body []byte) error {
 		return fmt.Errorf("s3: %s: %w", detail, ErrNotFound)
 	case status == 401 || status == 403 || code == "AccessDenied":
 		return fmt.Errorf("s3: %s: %w", detail, ErrDenied)
-	case status == 409 || code == "BucketAlreadyExists" || code == "BucketAlreadyOwnedByYou":
+	case status == 409 || status == 412 || code == "BucketAlreadyExists" || code == "BucketAlreadyOwnedByYou" || code == "PreconditionFailed":
 		return fmt.Errorf("s3: %s: %w", detail, ErrExists)
 	default:
 		return fmt.Errorf("s3: %s", detail)
@@ -110,7 +110,7 @@ func sdkError(op string, err error) error {
 			return fmt.Errorf("s3: %s: %w", op, ErrNotFound)
 		case "AccessDenied", "InvalidAccessKeyId", "SignatureDoesNotMatch":
 			return fmt.Errorf("s3: %s: %w", op, ErrDenied)
-		case "BucketAlreadyExists", "BucketAlreadyOwnedByYou":
+		case "BucketAlreadyExists", "BucketAlreadyOwnedByYou", "PreconditionFailed":
 			return fmt.Errorf("s3: %s: %w", op, ErrExists)
 		}
 	}

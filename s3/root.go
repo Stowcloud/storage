@@ -353,6 +353,12 @@ func (r *Root) PutObject(ctx context.Context, path storage.Path, body io.Reader,
 	return r.putReader(ctx, r.ObjectKey(path), body, size)
 }
 
+// PutObjectNoClobber creates an object only when the destination is absent.
+// Providers report a precondition failure as ErrExists.
+func (r *Root) PutObjectNoClobber(ctx context.Context, path storage.Path, body io.Reader, size int64) error {
+	return r.putReaderConditional(ctx, r.ObjectKey(path), body, size, "*")
+}
+
 func (r *Root) Mkdir(ctx context.Context, path storage.Path) error {
 	if path.IsRoot() {
 		return fmt.Errorf("s3: mkdir: %w", ErrExists)

@@ -245,3 +245,10 @@ func TestSpaceReportsScratchCapacity(t *testing.T) {
 		t.Fatalf("scratch capacity = %+v", s)
 	}
 }
+
+func TestClassifyS3PreconditionAsExists(t *testing.T) {
+	err := classifyS3Error(412, []byte(`<Error><Code>PreconditionFailed</Code></Error>`))
+	if !errors.Is(err, ErrExists) {
+		t.Fatalf("precondition error = %v, want ErrExists", err)
+	}
+}

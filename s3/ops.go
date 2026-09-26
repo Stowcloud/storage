@@ -122,10 +122,18 @@ func (r *Root) getObjectTo(ctx context.Context, key string, dst io.Writer) (int6
 }
 
 func (r *Root) putReader(ctx context.Context, key string, body io.Reader, size int64) error {
+	return r.putReaderConditional(ctx, key, body, size, "")
+}
+
+func (r *Root) putReaderConditional(ctx context.Context, key string, body io.Reader, size int64, ifNoneMatch string) error {
 	if size < 0 {
 		return errors.New("s3: negative object size")
 	}
-	_, err := r.client.PutObject(ctx, &s3.PutObjectInput{Bucket: aws.String(r.cfg.Bucket), Key: aws.String(key), Body: body, ContentLength: aws.Int64(size)})
+	in := &s3.PutObjectInput{Bucket: aws.String(r.cfg.Bucket), Key: aws.String(key), Body: body, ContentLength: aws.Int64(size)}
+	if ifNoneMatch != "" {
+		in.IfNoneMatch = aws.String(ifNoneMatch)
+	}
+	_, err := r.client.PutObject(ctx, in)
 	return sdkError("put object", err)
 }
 func (r *Root) putEmpty(ctx context.Context, key string) error {
